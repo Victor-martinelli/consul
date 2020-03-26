@@ -478,6 +478,8 @@ jobs:
   ember-build:
     docker:
       - image: *EMBER_IMAGE
+    environment:
+      CONSUL_COPYRIGHT_YEAR: 9999
     steps:
       - checkout
       - restore_cache:
