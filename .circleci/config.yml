@@ -259,6 +259,8 @@ jobs:
       <<: *ENVIRONMENT
     steps:
       - checkout
+      - attach_workspace: # this normally runs as the first job and has nothing to attach; only used in master branch after rebuilding UI
+          at: .
       - run:
           command: make dev
 
@@ -507,23 +509,6 @@ jobs:
           root: .
           paths:
             - ./agent/bindata_assetfs.go
-
-  # create a development build with static-assets
-  dev-build-with-static-assets:
-    docker:
-      - image: *GOLANG_IMAGE
-    environment:
-      <<: *ENVIRONMENT
-    steps:
-      - checkout
-      - run:
-          command: make dev
-
-      # save dev build to pass to downstream jobs
-      - persist_to_workspace:
-          root: /go/bin
-          paths:
-            - consul
 
   # run ember frontend tests
   ember-test-oss:
